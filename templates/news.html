@@ -5,13 +5,21 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
 <br />
-<h1>Публикация книги</h1>
+<p style="font-size: 50px;" class='text-center'>Публикация книги</p>
 <br />
-<form action="" method="post">
+<form enctype="multipart/form-data" action="" method="POST">
     {{ form.hidden_tag() }}
     <p>
         Введите название вашей книги<br>
         {{ form.title(class="form-control", type="title") }}<br>
+    </p>
+     <p>
+        Приложите фото обложки вашей книги<br>
+        {{ form.photo(class="form-control") }}<br>
+    </p>
+    <p>
+        Прикрепите книгу в формате pdf<br>
+        {{ form.file(class="form-control") }}<br>
     </p>
     <p>
         Опишите кратко, о чём ваша книга<br>

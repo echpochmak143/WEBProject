@@ -3,7 +3,8 @@
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
-<h1 class="text-center">{{ book.title }}</h1>
+<p></p>
+<p style="font-size: 50px;" class="text-center">{{ book.title }}</p>
 
 
 
@@ -26,10 +27,22 @@
                 </a>
             </div>
             </td>
+            <td>
+            </td>
         </tr>
     </tbody>
 </table>
 
+{% if current_user.is_authenticated %}
+    {% if current_user.id == book.user_id %}
+                <br />
+                <br />
+                <br />
+                <div style="display:flex; justify-content:center; align-items:center; ">
+                    <a href="/deletebook/{{ book.id }}" style="font-size: 50px;" class="btn align-center btn-danger">ㅤㅤㅤУдалить книгуㅤㅤㅤ</a>
+                </div>
+    {% endif %}
+{% endif %}
     
 </div>
 {% endblock %}

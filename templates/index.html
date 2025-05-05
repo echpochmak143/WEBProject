@@ -4,7 +4,7 @@
   href="{{ url_for('static', filename='css/styles.css') }}"
 />
 
-<h1 class="text-center">Ассортимент книг</h1>
+<p style="font-size: 50px;" class="text-center">Ассортимент книг</p>
 {%if not current_user.is_authenticated%}
 <h4 class="text-center">
   Войдите, чтобы получить доступ к информации о книгах
@@ -22,7 +22,7 @@
               alt="{{ item.title }}"
             />
 
-            <h2>{{ item.title }}</h2>
+            <h1>{{ item.title }}</h1>
             <div>{{ item.content }}</div>
             <div>Автор - {{ item.user.name }}</div>
             <div>Дата написания - {{ item.created_date }}</div>

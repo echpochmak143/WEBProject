@@ -1,7 +1,10 @@
+from os import path, remove
 from datetime import timedelta
+import datetime
 
-from flask import Flask, jsonify, make_response, render_template, redirect, abort, request
+from flask import Flask, jsonify, make_response, render_template, redirect, abort, request, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from werkzeug.utils import secure_filename
 
 from data import db_session, news_api
 from data.news import News
@@ -66,48 +69,22 @@ def publish():
         news.content = form.content.data
         news.con = form.con.data
         news.is_private = 0
-        db_sess.merge(current_user)
+        news.user = db_sess.query(User).filter(User.id == current_user.id).first()
+        news.created_date = datetime.date.today().strftime("%d.%m.%Y")
+        f = form.photo.data
+        f.save(path.join('static', 'images', f.filename))
+        news.image_path = f'images/{f.filename}'
+        p = form.file.data
+        p.save(path.join('static', 'books', p.filename))
+        news.file_path = f'books/{p.filename}'
+        db_sess.add(news)
         db_sess.commit()
         return redirect('/')
     return render_template('news.html', title='Добавление книги',
                            form=form)
 
 
-@app.route('/news/<int:id>', methods=['GET', 'POST'])
-@login_required
-def edit_news(id):
-    form = NewsForm()
-    if request.method == "GET":
-        db_sess = db_session.create_session()
-        news = db_sess.query(News).filter(News.id == id,
-                                          News.user == current_user
-                                          ).first()
-        if news:
-            form.title.data = news.title
-            form.content.data = news.content
-            form.is_private.data = news.is_private
-        else:
-            abort(404)
-    if form.validate_on_submit():
-        db_sess = db_session.create_session()
-        news = db_sess.query(News).filter(News.id == id,
-                                          News.user == current_user
-                                          ).first()
-        if news:
-            news.title = form.title.data
-            news.content = form.content.data
-            news.is_private = form.is_private.data
-            db_sess.commit()
-            return redirect('/')
-        else:
-            abort(404)
-    return render_template('news.html',
-                           title='Редактирование новости',
-                           form=form
-                           )
-
-
-@app.route('/news_delete/<int:id>', methods=['GET', 'POST'])
+@app.route('/deletebook/<int:id>', methods=['GET', 'POST'])
 @login_required
 def news_delete(id):
     db_sess = db_session.create_session()
@@ -115,6 +92,8 @@ def news_delete(id):
                                       News.user == current_user
                                       ).first()
     if news:
+        remove(f'static/{news.image_path}')
+        remove(f'static/{news.file_path}')
         db_sess.delete(news)
         db_sess.commit()
     else:

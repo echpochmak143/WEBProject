@@ -5,22 +5,32 @@
 
 <table>
     <tbody>
+    <br />
+    <p style="font-size: 50px;" class='text-center'>Ваш профиль</p>
+    <br />
         <tr class='item'>
             <td>
-                <br />
-                <br />
-                <h1>Ваше имя - {{ user.name }}</h1>
-                <h1>Ваша электронная почта - {{ user.email }}</h1>
-                <h1>Ваша дата регистрации - {{ user.created_date.strftime("%d.%m.%Y") }}</h1>
-                <br />
+                <h2>Ваше имя - {{ user.name }}</h2>
+                <h2>Ваша электронная почта - {{ user.email }}</h2>
+                <h2>Ваша дата регистрации - {{ user.created_date.strftime("%d.%m.%Y") }}</h2>
                 <br />
                 <big><a class="btn btn-primary" href="/edit">Редактировать</a>
                     <a class="btn btn-danger" href="/deleteaccount ">Удалить</a></big>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
             </td>
         </tr>
     </tbody>
 </table>
 
+<div style="display:flex; justify-content:center; align-items:center; ">
+                    <a href="/publish" style="font-size: 50px;" class="btn align-center btn-success">Хотите опубликовать собственную книгу?</a>
+</div>
 
 </div>
 {% endblock %}
